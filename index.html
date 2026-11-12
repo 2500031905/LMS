@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EduLearn LMS</title>
+
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+            color: #222b45;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Brand */
+        .brand {
+            color: #5b4bdb;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 16px;
+            background: #5b4bdb;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .btn.light {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Text */
+        .muted {
+            color: #737b91;
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .side {
+            width: 245px;
+            background: #fff;
+            padding: 25px 18px;
+            box-shadow: 2px 0 15px #1725540a;
+        }
+
+        .side .brand {
+            display: block;
+            margin: 0 10px 28px;
+        }
+
+        /* Navigation */
+        .nav a {
+            display: block;
+            padding: 12px 14px;
+            margin: 5px 0;
+            border-radius: 9px;
+            color: #59617a;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #eeecff;
+            color: #5142ce;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            min-width: 0;
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border: 1px solid #eceef5;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .big {
+            font-size: 30px;
+            color: #5b4bdb;
+            font-weight: 800;
+        }
+
+        /* Form Elements */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe2ed;
+            border-radius: 9px;
+            font: inherit;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin: 14px 0 7px;
+        }
+
+        /* Messages */
+        .msg {
+            margin-top: 12px;
+        }
+
+        .danger {
+            background: #c0392b;
+        }
+
+        .secondary {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 7%;
+            background: #fff;
+            box-shadow: 0 2px 12px #17255410;
+        }
+
+        /* Top Navigation */
+        .navtop {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 75px 7%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 60px);
+            line-height: 1.1;
+            margin: 8px 0 18px;
+        }
+
+        /* Hero Panel */
+        .heroPanel {
+            background: #fff;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 15px 45px #27336a12;
+        }
+
+        /* General Section */
+        .section {
+            padding: 30px 7% 65px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #737b91;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 800px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .side {
+                width: 100%;
+            }
+
+            .nav {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .nav a {
+                padding: 9px;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .grid,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+
+        <a class="brand" href="index.html">
+            EduLearn
+        </a>
+
+        <nav class="navtop">
+            <a class="btn light" href="login.html">
+                Login
+            </a>
+
+            <a class="btn" href="register.html">
+                Get Started
+            </a>
+        </nav>
+
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <!-- Hero Content -->
+        <div>
+
+            <p style="color:#5b4bdb; font-weight:bold;">
+                LEARN • PRACTICE • GROW
+            </p>
+
+            <h1>
+                Your learning journey starts here.
+            </h1>
+
+            <p class="muted">
+                Explore courses, track progress, and build skills
+                at your own pace with EduLearn LMS.
+            </p>
+
+            <a class="btn" href="register.html">
+                Create an account
+            </a>
+
+            <a class="btn light" href="login.html">
+                Sign in
+            </a>
+
+        </div>
+
+        <!-- Hero Panel -->
+        <div class="heroPanel">
+
+            <h2>
+                📚 Learning made simple
+            </h2>
+
+            <p class="muted">
+                One platform for students and administrators.
+            </p>
+
+            <!-- Student Information -->
+            <div class="card" style="margin-top:12px;">
+
+                🎓 <b>Students</b>
+
+                <p class="muted">
+                    Explore courses, enroll, track progress
+                    and manage your profile.
+                </p>
+
+            </div>
+
+            <!-- Admin Information -->
+            <div class="card" style="margin-top:12px;">
+
+                🛠️ <b>Admins</b>
+
+                <p class="muted">
+                    Manage courses and view student registration
+                    and enrollment details.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+
+        <h2>
+            EduLearn LMS
+        </h2>
+
+        <div class="grid">
+
+            <!-- Explore Courses -->
+            <div class="card">
+
+                <h3>
+                    🔎 Explore Courses
+                </h3>
+
+                <p class="muted">
+                    Browse available learning content.
+                </p>
+
+            </div>
+
+            <!-- Track Progress -->
+            <div class="card">
+
+                <h3>
+                    📈 Track Progress
+                </h3>
+
+                <p class="muted">
+                    Maintain your course progress.
+                </p>
+
+            </div>
+
+            <!-- Administration -->
+            <div class="card">
+
+                <h3>
+                    ⚙️ Administration
+                </h3>
+
+                <p class="muted">
+                    Manage courses and students.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        © 2026 EduLearn LMS
+    </footer>
+
+    <script>
+        // Get courses from LocalStorage
+        let courses = JSON.parse(
+            localStorage.getItem("eduLearnCourses") || "null"
+        );
+
+        // Create default courses if none exist
+        if (!courses) {
+
+            courses = [
+                {
+                    id: "c1",
+                    title: "HTML & CSS Basics",
+                    category: "Web Development",
+                    description: "Learn the foundations of web development.",
+                    topics: [
+                        "HTML",
+                        "CSS",
+                        "Flexbox",
+                        "Grid"
+                    ]
+                },
+
+                {
+                    id: "c2",
+                    title: "JavaScript Fundamentals",
+                    category: "Programming",
+                    description: "Learn JavaScript fundamentals and DOM concepts.",
+                    topics: [
+                        "Variables",
+                        "Functions",
+                        "DOM",
+                        "Events"
+                    ]
+                },
+
+                {
+                    id: "c3",
+                    title: "Python for Beginners",
+                    category: "Programming",
+                    description: "Start programming using beginner-friendly Python.",
+                    topics: [
+                        "Data Types",
+                        "Conditions",
+                        "Loops",
+                        "Functions"
+                    ]
+                }
+            ];
+
+            // Save default courses to LocalStorage
+            localStorage.setItem(
+                "eduLearnCourses",
+                JSON.stringify(courses)
+            );
+        }
+    </script>
+
+</body>
+
+</html>

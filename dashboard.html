@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard</title>
+
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+            color: #222b45;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Brand */
+        .brand {
+            color: #5b4bdb;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 16px;
+            background: #5b4bdb;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .btn.light {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Text */
+        .muted {
+            color: #737b91;
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .side {
+            width: 245px;
+            background: #fff;
+            padding: 25px 18px;
+            box-shadow: 2px 0 15px #1725540a;
+        }
+
+        .side .brand {
+            display: block;
+            margin: 0 10px 28px;
+        }
+
+        /* Navigation */
+        .nav a {
+            display: block;
+            padding: 12px 14px;
+            margin: 5px 0;
+            border-radius: 9px;
+            color: #59617a;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #eeecff;
+            color: #5142ce;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            min-width: 0;
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border: 1px solid #eceef5;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        /* Dashboard Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .big {
+            font-size: 30px;
+            color: #5b4bdb;
+            font-weight: 800;
+        }
+
+        /* Quick Action Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        /* Form Elements */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe2ed;
+            border-radius: 9px;
+            font: inherit;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin: 14px 0 7px;
+        }
+
+        /* Messages */
+        .msg {
+            margin-top: 12px;
+        }
+
+        .danger {
+            background: #c0392b;
+        }
+
+        .secondary {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 800px) {
+            .layout {
+                display: block;
+            }
+
+            .side {
+                width: 100%;
+            }
+
+            .nav {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .nav a {
+                padding: 9px;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .grid,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- Sidebar -->
+        <aside class="side">
+
+            <a class="brand" href="dashboard.html">
+                EduLearn
+            </a>
+
+            <nav class="nav">
+                <a href="dashboard.html">Overview</a>
+                <a href="courses.html">Explore Courses</a>
+                <a href="my-courses.html">My Courses</a>
+                <a href="profile.html">My Profile</a>
+                <a href="#" onclick="logout()">Logout</a>
+            </nav>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+
+            <p class="muted">
+                STUDENT DASHBOARD
+            </p>
+
+            <h1 id="welcome">
+                Welcome
+            </h1>
+
+            <p class="muted">
+                Manage your learning from here.
+            </p>
+
+            <!-- Statistics Cards -->
+            <section class="cards">
+
+                <div class="card">
+                    <p class="muted">
+                        Available Courses
+                    </p>
+
+                    <div id="courses" class="big">
+                        0
+                    </div>
+                </div>
+
+                <div class="card">
+                    <p class="muted">
+                        My Enrollments
+                    </p>
+
+                    <div id="enrolled" class="big">
+                        0
+                    </div>
+                </div>
+
+                <div class="card">
+                    <p class="muted">
+                        Average Progress
+                    </p>
+
+                    <div id="progress" class="big">
+                        0%
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Quick Actions -->
+            <div class="grid">
+
+                <a class="card" href="courses.html">
+                    <h3>🔎 Explore Courses</h3>
+
+                    <p class="muted">
+                        Find and enroll in courses.
+                    </p>
+                </a>
+
+                <a class="card" href="my-courses.html">
+                    <h3>📚 My Courses</h3>
+
+                    <p class="muted">
+                        View enrolled courses and progress.
+                    </p>
+                </a>
+
+                <a class="card" href="profile.html">
+                    <h3>👤 My Profile</h3>
+
+                    <p class="muted">
+                        View and edit your profile.
+                    </p>
+                </a>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+        // Get current logged-in user
+        let current = JSON.parse(
+            localStorage.getItem("eduLearnCurrentUser") || "null"
+        );
+
+        // Authentication check
+        if (!current) {
+            location.href = "login.html";
+        } else if (current.role !== "student") {
+            location.href = "admin-dashboard.html";
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem("eduLearnCurrentUser");
+            location.href = "login.html";
+        }
+
+        // Load dashboard data
+        if (current) {
+
+            let courses = JSON.parse(
+                localStorage.getItem("eduLearnCourses") || "[]"
+            );
+
+            let enrollments = JSON.parse(
+                localStorage.getItem(
+                    "eduLearnEnrollments_" + current.id
+                ) || "[]"
+            );
+
+            let progress = JSON.parse(
+                localStorage.getItem(
+                    "eduLearnProgress_" + current.id
+                ) || "{}"
+            );
+
+            // Display welcome message
+            document.getElementById("welcome").textContent =
+                "Welcome, " + current.name + "!";
+
+            // Display available courses
+            document.getElementById("courses").textContent =
+                courses.length;
+
+            // Display enrolled courses
+            document.getElementById("enrolled").textContent =
+                enrollments.length;
+
+            // Calculate average progress
+            let averageProgress = enrollments.length
+                ? Math.round(
+                    enrollments.reduce(
+                        (sum, courseId) =>
+                            sum + (Number(progress[courseId]) || 0),
+                        0
+                    ) / enrollments.length
+                )
+                : 0;
+
+            // Display average progress
+            document.getElementById("progress").textContent =
+                averageProgress + "%";
+        }
+    </script>
+
+</body>
+
+</html>

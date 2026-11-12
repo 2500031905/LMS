@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | EduLearn</title>
+
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+            color: #222b45;
+            min-height: 100vh;
+
+            display: grid;
+            place-items: center;
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Brand */
+        .brand {
+            color: #5b4bdb;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 16px;
+            background: #5b4bdb;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .btn.light {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Text */
+        .muted {
+            color: #737b91;
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .side {
+            width: 245px;
+            background: #fff;
+            padding: 25px 18px;
+            box-shadow: 2px 0 15px #1725540a;
+        }
+
+        .side .brand {
+            display: block;
+            margin: 0 10px 28px;
+        }
+
+        /* Navigation */
+        .nav a {
+            display: block;
+            padding: 12px 14px;
+            margin: 5px 0;
+            border-radius: 9px;
+            color: #59617a;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #eeecff;
+            color: #5142ce;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            min-width: 0;
+        }
+
+        /* Card */
+        .card {
+            background: #fff;
+            border: 1px solid #eceef5;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        /* Large Text */
+        .big {
+            font-size: 30px;
+            color: #5b4bdb;
+            font-weight: 800;
+        }
+
+        /* Form Elements */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe2ed;
+            border-radius: 9px;
+            font: inherit;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin: 14px 0 7px;
+        }
+
+        /* Messages */
+        .msg {
+            margin-top: 12px;
+        }
+
+        .danger {
+            background: #c0392b;
+        }
+
+        .secondary {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Authentication Card */
+        .auth {
+            width: 100%;
+            max-width: 440px;
+            background: #fff;
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 15px 45px #27336a15;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 800px) {
+
+            .layout {
+                display: block;
+            }
+
+            .side {
+                width: 100%;
+            }
+
+            .nav {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .nav a {
+                padding: 9px;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .grid,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Login Card -->
+    <main class="auth">
+
+        <!-- Logo -->
+        <a class="brand" href="index.html">
+            EduLearn
+        </a>
+
+        <h1>
+            Welcome back
+        </h1>
+
+        <p class="muted">
+            Choose your role before logging in.
+        </p>
+
+        <!-- Login Form -->
+        <form id="form">
+
+            <!-- Role -->
+            <label for="role">
+                Login as
+            </label>
+
+            <select id="role">
+                <option value="student">
+                    Student
+                </option>
+
+                <option value="admin">
+                    Admin
+                </option>
+            </select>
+
+            <!-- Email -->
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                required
+                placeholder="you@example.com"
+            >
+
+            <!-- Password -->
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                id="password"
+                type="password"
+                required
+                placeholder="Password"
+            >
+
+            <!-- Login Button -->
+            <button
+                class="btn"
+                type="submit"
+                style="width:100%; margin-top:20px;"
+            >
+                Login
+            </button>
+
+            <!-- Error Message -->
+            <p id="msg" class="msg"></p>
+
+        </form>
+
+        <!-- Registration Link -->
+        <p
+            class="muted"
+            style="text-align:center;"
+        >
+            New user?
+
+            <a
+                style="color:#5b4bdb;"
+                href="register.html"
+            >
+                Register here
+            </a>
+        </p>
+
+    </main>
+
+    <script>
+        // Login Form Submit
+        document
+            .getElementById("form")
+            .addEventListener("submit", function (e) {
+
+                e.preventDefault();
+
+                // Get form values
+                let role = document.getElementById("role").value;
+
+                let email = document
+                    .getElementById("email")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+                let password = document.getElementById("password").value;
+
+                let msg = document.getElementById("msg");
+
+                // Demo Admin Login
+                if (
+                    role === "admin" &&
+                    email === "admin@edulearn.com" &&
+                    password === "admin123"
+                ) {
+
+                    let admin = {
+                        id: "admin-demo",
+                        name: "EduLearn Admin",
+                        email: email,
+                        role: "admin"
+                    };
+
+                    localStorage.setItem(
+                        "eduLearnCurrentUser",
+                        JSON.stringify(admin)
+                    );
+
+                    location.href = "admin-dashboard.html";
+
+                    return;
+                }
+
+                // Get Registered Users
+                let users = JSON.parse(
+                    localStorage.getItem("eduLearnUsers") || "[]"
+                );
+
+                // Find Matching User
+                let user = users.find(function (u) {
+
+                    return (
+                        u.email.toLowerCase() === email &&
+                        u.password === password &&
+                        u.role === role
+                    );
+
+                });
+
+                // Invalid Login
+                if (!user) {
+
+                    msg.textContent =
+                        "Invalid email, password, or role.";
+
+                    return;
+                }
+
+                // Save Current User
+                localStorage.setItem(
+                    "eduLearnCurrentUser",
+                    JSON.stringify(user)
+                );
+
+                // Redirect Based on Role
+                if (role === "admin") {
+                    location.href = "admin-dashboard.html";
+                } else {
+                    location.href = "dashboard.html";
+                }
+
+            });
+    </script>
+
+</body>
+
+</html>

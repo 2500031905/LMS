@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile</title>
+
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+            color: #222b45;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Brand */
+        .brand {
+            color: #5b4bdb;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 16px;
+            background: #5b4bdb;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .btn.light {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Text */
+        .muted {
+            color: #737b91;
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .side {
+            width: 245px;
+            background: #fff;
+            padding: 25px 18px;
+            box-shadow: 2px 0 15px #1725540a;
+        }
+
+        .side .brand {
+            display: block;
+            margin: 0 10px 28px;
+        }
+
+        /* Navigation */
+        .nav a {
+            display: block;
+            padding: 12px 14px;
+            margin: 5px 0;
+            border-radius: 9px;
+            color: #59617a;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #eeecff;
+            color: #5142ce;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            min-width: 0;
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border: 1px solid #eceef5;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .big {
+            font-size: 30px;
+            color: #5b4bdb;
+            font-weight: 800;
+        }
+
+        /* Form Elements */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe2ed;
+            border-radius: 9px;
+            font: inherit;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin: 14px 0 7px;
+        }
+
+        /* Messages */
+        .msg {
+            margin-top: 12px;
+        }
+
+        .danger {
+            background: #c0392b;
+        }
+
+        .secondary {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 800px) {
+
+            .layout {
+                display: block;
+            }
+
+            .side {
+                width: 100%;
+            }
+
+            .nav {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .nav a {
+                padding: 9px;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .grid,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- Sidebar -->
+        <aside class="side">
+
+            <a class="brand" href="dashboard.html">
+                EduLearn
+            </a>
+
+            <nav class="nav">
+
+                <a href="dashboard.html">
+                    Overview
+                </a>
+
+                <a href="courses.html">
+                    Explore Courses
+                </a>
+
+                <a href="my-courses.html">
+                    My Courses
+                </a>
+
+                <a href="profile.html">
+                    My Profile
+                </a>
+
+                <a href="#" onclick="logout()">
+                    Logout
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+
+            <h1>
+                My Profile
+            </h1>
+
+            <p class="muted">
+                View and update your student information.
+            </p>
+
+            <!-- Profile Form -->
+            <section
+                class="card"
+                style="max-width:650px;"
+            >
+
+                <form id="form">
+
+                    <!-- Full Name -->
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        id="name"
+                        type="text"
+                        required
+                    >
+
+                    <!-- Email -->
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        required
+                    >
+
+                    <!-- Role -->
+                    <p class="muted">
+                        Role: Student
+                    </p>
+
+                    <!-- Save Button -->
+                    <button
+                        class="btn"
+                        type="submit"
+                    >
+                        Save Changes
+                    </button>
+
+                    <!-- Message -->
+                    <p
+                        id="msg"
+                        class="msg"
+                    ></p>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script>
+        // Get current logged-in user
+        let current = JSON.parse(
+            localStorage.getItem("eduLearnCurrentUser") || "null"
+        );
+
+        // Authentication check
+        if (!current) {
+            location.href = "login.html";
+        } else if (current.role !== "student") {
+            location.href = "admin-dashboard.html";
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem("eduLearnCurrentUser");
+            location.href = "login.html";
+        }
+
+        // Load current user information
+        document.getElementById("name").value =
+            current.name;
+
+        document.getElementById("email").value =
+            current.email;
+
+        // Profile form submit
+        document.getElementById("form").onsubmit =
+            function (e) {
+
+                e.preventDefault();
+
+                // Get updated values
+                let name = document
+                    .getElementById("name")
+                    .value
+                    .trim();
+
+                let email = document
+                    .getElementById("email")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+                // Get registered users
+                let users = JSON.parse(
+                    localStorage.getItem("eduLearnUsers") || "[]"
+                );
+
+                // Check duplicate email
+                if (
+                    users.some(
+                        function (user) {
+                            return (
+                                user.id !== current.id &&
+                                user.email === email
+                            );
+                        }
+                    )
+                ) {
+
+                    document.getElementById("msg").textContent =
+                        "Email already in use.";
+
+                    return;
+                }
+
+                // Update current user
+                current.name = name;
+                current.email = email;
+
+                // Update user in LocalStorage
+                users = users.map(
+                    function (user) {
+
+                        return user.id === current.id
+                            ? {
+                                ...user,
+                                name: name,
+                                email: email
+                            }
+                            : user;
+
+                    }
+                );
+
+                // Save updated users
+                localStorage.setItem(
+                    "eduLearnUsers",
+                    JSON.stringify(users)
+                );
+
+                // Save current user
+                localStorage.setItem(
+                    "eduLearnCurrentUser",
+                    JSON.stringify(current)
+                );
+
+                // Success message
+                document.getElementById("msg").textContent =
+                    "Profile updated successfully.";
+            };
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Students</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+            color: #222b45;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand {
+            color: #5b4bdb;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 16px;
+            background: #5b4bdb;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .btn.light {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        .muted {
+            color: #737b91;
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .side {
+            width: 245px;
+            background: #fff;
+            padding: 25px 18px;
+            box-shadow: 2px 0 15px #1725540a;
+        }
+
+        .side .brand {
+            display: block;
+            margin: 0 10px 28px;
+        }
+
+        .nav a {
+            display: block;
+            padding: 12px 14px;
+            margin: 5px 0;
+            border-radius: 9px;
+            color: #59617a;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #eeecff;
+            color: #5142ce;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            min-width: 0;
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border: 1px solid #eceef5;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .big {
+            font-size: 30px;
+            color: #5b4bdb;
+            font-weight: 800;
+        }
+
+        /* Form Elements */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe2ed;
+            border-radius: 9px;
+            font: inherit;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin: 14px 0 7px;
+        }
+
+        .msg {
+            margin-top: 12px;
+        }
+
+        .danger {
+            background: #c0392b;
+        }
+
+        .secondary {
+            background: #eeecff;
+            color: #5142ce;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eceef5;
+        }
+
+        th {
+            background: #f8f8fc;
+        }
+
+        .tableWrap {
+            overflow-x: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 800px) {
+
+            .layout {
+                display: block;
+            }
+
+            .side {
+                width: 100%;
+            }
+
+            .nav {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .nav a {
+                padding: 9px;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .grid,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="layout">
+
+        <!-- Sidebar -->
+        <aside class="side">
+
+            <a
+                class="brand"
+                href="admin-dashboard.html"
+            >
+                EduLearn Admin
+            </a>
+
+
+            <nav class="nav">
+
+                <a href="admin-dashboard.html">
+                    Overview
+                </a>
+
+                <a href="admin-courses.html">
+                    Manage Courses
+                </a>
+
+                <a
+                    href="admin-students.html"
+                    class="active"
+                >
+                    Manage Students
+                </a>
+
+                <a
+                    href="#"
+                    onclick="logout()"
+                >
+                    Logout
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main">
+
+            <h1>
+                Manage Students
+            </h1>
+
+            <p class="muted">
+                Student registration and enrollment details.
+            </p>
+
+
+            <!-- Search -->
+            <input
+                type="text"
+                id="search"
+                placeholder="Search by name or email..."
+                oninput="render()"
+            >
+
+
+            <!-- Student Table -->
+            <section
+                class="card"
+                style="margin-top: 20px;"
+            >
+
+                <div class="tableWrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Enrollments</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="rows">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <p
+                    id="empty"
+                    class="muted"
+                ></p>
+
+            </section>
+
+
+            <!-- Student Details -->
+            <section
+                class="card"
+                id="details"
+                hidden
+            >
+
+                <h2 id="studentName"></h2>
+
+                <p
+                    id="studentEmail"
+                    class="muted"
+                ></p>
+
+
+                <div id="enrollmentDetails"></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        // Get current logged-in user
+        let current = JSON.parse(
+            localStorage.getItem("eduLearnCurrentUser") || "null"
+        );
+
+
+        // Check admin login
+        if (!current) {
+
+            location.href = "login.html";
+
+        } else if (current.role !== "admin") {
+
+            location.href = "dashboard.html";
+
+        }
+
+
+        // Logout
+        function logout() {
+
+            localStorage.removeItem(
+                "eduLearnCurrentUser"
+            );
+
+            location.href = "login.html";
+        }
+
+
+        // Display students
+        function render() {
+
+            let searchText =
+                document.getElementById("search")
+                    .value
+                    .toLowerCase();
+
+
+            // Get users from LocalStorage
+            let users = JSON.parse(
+                localStorage.getItem("eduLearnUsers") || "[]"
+            );
+
+
+            // Filter students and search result
+            let students = users.filter(function (user) {
+
+                let studentName =
+                    user.name || "";
+
+                let studentEmail =
+                    user.email || "";
+
+
+                return (
+                    user.role === "student" &&
+                    (
+                        studentName +
+                        " " +
+                        studentEmail
+                    )
+                        .toLowerCase()
+                        .includes(searchText)
+                );
+
+            });
+
+
+            let rows =
+                document.getElementById("rows");
+
+
+            // Clear existing rows
+            rows.innerHTML = "";
+
+
+            // Show empty message
+            document.getElementById("empty").textContent =
+                students.length
+                    ? ""
+                    : "No students found.";
+
+
+            // Create table rows
+            students.forEach(function (student) {
+
+                // Get student's enrollments
+                let enrollments = JSON.parse(
+                    localStorage.getItem(
+                        "eduLearnEnrollments_" +
+                        student.id
+                    ) || "[]"
+                );
+
+
+                // Create row
+                let row =
+                    document.createElement("tr");
+
+
+                // Name
+                let nameCell =
+                    document.createElement("td");
+
+                nameCell.textContent =
+                    student.name;
+
+
+                // Email
+                let emailCell =
+                    document.createElement("td");
+
+                emailCell.textContent =
+                    student.email;
+
+
+                // Enrollment count
+                let enrollmentCell =
+                    document.createElement("td");
+
+                enrollmentCell.textContent =
+                    enrollments.length;
+
+
+                // Action cell
+                let actionCell =
+                    document.createElement("td");
+
+
+                // View Details button
+                let button =
+                    document.createElement("button");
+
+                button.className =
+                    "btn secondary";
+
+                button.textContent =
+                    "View Details";
+
+
+                button.onclick = function () {
+
+                    details(student);
+
+                };
+
+
+                // Add button to action cell
+                actionCell.appendChild(button);
+
+
+                // Add cells to row
+                row.append(
+                    nameCell,
+                    emailCell,
+                    enrollmentCell,
+                    actionCell
+                );
+
+
+                // Add row to table
+                rows.appendChild(row);
+
+            });
+
+        }
+
+
+        // Show student enrollment details
+        function details(student) {
+
+            // Show details section
+            document.getElementById("details").hidden =
+                false;
+
+
+            // Display student information
+            document.getElementById("studentName")
+                .textContent =
+                student.name;
+
+
+            document.getElementById("studentEmail")
+                .textContent =
+                student.email;
+
+
+            // Enrollment details container
+            let box =
+                document.getElementById(
+                    "enrollmentDetails"
+                );
+
+
+            box.innerHTML = "";
+
+
+            // Get enrolled course IDs
+            let enrolledCourseIds = JSON.parse(
+                localStorage.getItem(
+                    "eduLearnEnrollments_" +
+                    student.id
+                ) || "[]"
+            );
+
+
+            // Get student's progress
+            let progress = JSON.parse(
+                localStorage.getItem(
+                    "eduLearnProgress_" +
+                    student.id
+                ) || "{}"
+            );
+
+
+            // Get all courses
+            let courses = JSON.parse(
+                localStorage.getItem(
+                    "eduLearnCourses"
+                ) || "[]"
+            );
+
+
+            // No courses enrolled
+            if (!enrolledCourseIds.length) {
+
+                box.textContent =
+                    "No courses enrolled.";
+
+                return;
+            }
+
+
+            // Display each enrolled course
+            enrolledCourseIds.forEach(function (courseId) {
+
+                // Find course
+                let course =
+                    courses.find(function (item) {
+
+                        return item.id === courseId;
+
+                    });
+
+
+                // Create course card
+                let courseCard =
+                    document.createElement("div");
+
+
+                courseCard.className =
+                    "card";
+
+
+                courseCard.style.margin =
+                    "10px 0";
+
+
+                // Course name
+                let courseName =
+                    course
+                        ? course.title
+                        : "Deleted course";
+
+
+                // Course progress
+                let courseProgress =
+                    Number(progress[courseId]) || 0;
+
+
+                courseCard.textContent =
+                    courseName +
+                    " — Progress: " +
+                    courseProgress +
+                    "%";
+
+
+                box.appendChild(courseCard);
+
+            });
+
+        }
+
+
+        // Load students when page opens
+        render();
+
+    </script>
+
+</body>
+
+</html>
