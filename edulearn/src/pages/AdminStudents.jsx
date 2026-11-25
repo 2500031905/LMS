@@ -40,6 +40,21 @@ function AdminStudents() {
         );
     }
 
+    function calculateProgress(course, progress) {
+        const topics = course?.topics || [];
+        const completedTopics = progress[course.id] || [];
+
+        if (topics.length === 0) return 0;
+
+        const completedCount = completedTopics.filter(topic =>
+            topics.includes(topic)
+        ).length;
+
+        return Math.round(
+            (completedCount / topics.length) * 100
+        );
+    }
+
     const selectedEnrollments = selectedStudent
         ? getEnrollments(selectedStudent.email)
         : [];
@@ -50,36 +65,29 @@ function AdminStudents() {
 
     return (
         <div className="layout">
-
             <AdminSidebar />
 
             <main className="main">
-
-                {/* PAGE HEADER */}
                 <section className="adminStudentsWelcome">
-
                     <div>
                         <span className="eyebrow">
-                            ADMIN MODULE
+                            FACULTY MODULE
                         </span>
 
                         <h1>Manage Students</h1>
 
                         <p>
-                            View registered students, their
-                            enrollments and learning progress.
+                            View your students, monitor their course
+                            enrollments and track their learning progress.
                         </p>
                     </div>
 
                     <div className="adminStudentsHeaderIcon">
                         👨‍🎓
                     </div>
-
                 </section>
 
-                {/* STUDENT SUMMARY */}
                 <div className="adminStudentSummary">
-
                     <div className="adminStudentSummaryIcon">
                         👥
                     </div>
@@ -88,34 +96,29 @@ function AdminStudents() {
                         <strong>{students.length}</strong>
                         <span>Registered Students</span>
                     </div>
-
                 </div>
 
-                {/* STUDENT TABLE */}
                 <section className="panel adminStudentsPanel">
-
                     <div className="adminStudentsHeading">
-
                         <div>
                             <span className="eyebrow">
                                 STUDENT DIRECTORY
                             </span>
 
-                            <h2>Registered Students</h2>
+                            <h2>My Students</h2>
 
                             <p className="muted">
-                                Search and view student account details.
+                                Search and view student account details
+                                and academic progress.
                             </p>
                         </div>
 
                         <span className="adminStudentCount">
                             {filteredStudents.length} Students
                         </span>
-
                     </div>
 
                     <div className="adminStudentSearch">
-
                         <span>🔍</span>
 
                         <input
@@ -124,13 +127,10 @@ function AdminStudents() {
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                         />
-
                     </div>
 
                     <div className="tableWrap adminStudentTableWrap">
-
                         <table className="adminStudentTable">
-
                             <thead>
                                 <tr>
                                     <th>Student</th>
@@ -141,14 +141,10 @@ function AdminStudents() {
                             </thead>
 
                             <tbody>
-
                                 {filteredStudents.map(student => (
-
                                     <tr key={student.email}>
-
                                         <td>
                                             <div className="adminStudentName">
-
                                                 <span className="adminStudentAvatar">
                                                     {(student.name || "S")
                                                         .charAt(0)
@@ -158,7 +154,6 @@ function AdminStudents() {
                                                 <strong>
                                                     {student.name || "Student"}
                                                 </strong>
-
                                             </div>
                                         </td>
 
@@ -181,34 +176,26 @@ function AdminStudents() {
                                                 View Details
                                             </button>
                                         </td>
-
                                     </tr>
-
                                 ))}
-
                             </tbody>
-
                         </table>
-
                     </div>
 
                     {filteredStudents.length === 0 && (
                         <div className="adminStudentsEmpty">
                             <span>🔍</span>
                             <h3>No students found</h3>
-                            <p>Try searching with another name or email.</p>
+                            <p>
+                                Try searching with another name or email.
+                            </p>
                         </div>
                     )}
-
                 </section>
 
-                {/* SELECTED STUDENT DETAILS */}
                 {selectedStudent && (
-
                     <section className="panel adminSelectedStudent">
-
                         <div className="adminSelectedHeading">
-
                             <div>
                                 <span className="eyebrow">
                                     STUDENT OVERVIEW
@@ -224,12 +211,9 @@ function AdminStudents() {
                             >
                                 Close ✕
                             </button>
-
                         </div>
 
-                        {/* STUDENT IDENTITY */}
                         <div className="adminSelectedIdentity">
-
                             <div className="adminSelectedAvatar">
                                 {(selectedStudent.name || "S")
                                     .charAt(0)
@@ -244,10 +228,8 @@ function AdminStudents() {
                                     Student Account
                                 </span>
                             </div>
-
                         </div>
 
-                        {/* ENROLLMENT DETAILS */}
                         <div className="adminEnrolledHeading">
                             <h3>Enrolled Courses</h3>
 
@@ -257,7 +239,6 @@ function AdminStudents() {
                         </div>
 
                         {selectedEnrollments.length === 0 ? (
-
                             <div className="adminStudentsEmpty">
                                 <span>📚</span>
                                 <h3>No enrolled courses</h3>
@@ -266,50 +247,54 @@ function AdminStudents() {
                                     in any courses yet.
                                 </p>
                             </div>
-
                         ) : (
-
                             <div className="adminEnrolledCourses">
-
                                 {selectedEnrollments.map(courseId => {
-
                                     const course = courses.find(
                                         item => item.id === courseId
                                     );
 
-                                    const value = Math.min(
-                                        100,
-                                        Math.max(
-                                            0,
-                                            Number(selectedProgress[courseId]) || 0
-                                        )
+                                    if (!course) {
+                                        return (
+                                            <div
+                                                className="adminEnrolledCourse"
+                                                key={courseId}
+                                            >
+                                                <h3>Deleted course</h3>
+                                                <p>Course details are unavailable.</p>
+                                            </div>
+                                        );
+                                    }
+
+                                    const topics = course.topics || [];
+                                    const completedTopics =
+                                        selectedProgress[courseId] || [];
+
+                                    const completedCount =
+                                        completedTopics.filter(topic =>
+                                            topics.includes(topic)
+                                        ).length;
+
+                                    const value = calculateProgress(
+                                        course,
+                                        selectedProgress
                                     );
 
                                     return (
-
                                         <div
                                             className="adminEnrolledCourse"
                                             key={courseId}
                                         >
-
                                             <div className="adminEnrolledCourseTop">
-
                                                 <div>
                                                     <span className="adminCourseCategory">
-                                                        {course?.category || "Course"}
+                                                        {course.category || "Course"}
                                                     </span>
 
-                                                    <h3>
-                                                        {course
-                                                            ? course.title
-                                                            : "Deleted course"}
-                                                    </h3>
+                                                    <h3>{course.title}</h3>
                                                 </div>
 
-                                                <strong>
-                                                    {value}%
-                                                </strong>
-
+                                                <strong>{value}%</strong>
                                             </div>
 
                                             <div className="progressTrack">
@@ -321,27 +306,39 @@ function AdminStudents() {
                                             </div>
 
                                             <p className="adminProgressText">
-                                                {value === 100
-                                                    ? "Course completed!"
-                                                    : "Learning progress"}
+                                                {completedCount} of {topics.length} topics completed
                                             </p>
 
+                                            <div className="adminStudentTopics">
+                                                {topics.map((topic, index) => (
+                                                    <div
+                                                        className="adminStudentTopic"
+                                                        key={`${courseId}-${index}`}
+                                                    >
+                                                        <span>
+                                                            {completedTopics.includes(topic)
+                                                                ? "☑"
+                                                                : "☐"}
+                                                        </span>
+
+                                                        <span>{topic}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <p className="adminProgressText">
+                                                {value === 100
+                                                    ? "Course completed! 🎉"
+                                                    : "Learning progress"}
+                                            </p>
                                         </div>
-
                                     );
-
                                 })}
-
                             </div>
-
                         )}
-
                     </section>
-
                 )}
-
             </main>
-
         </div>
     );
 }

@@ -11,17 +11,15 @@ function AdminSidebar() {
 
     return (
         <aside className="sidebar">
-
             <h2 className="sidebarBrand">
-                EduLearn Admin
+                EduLearn Faculty
             </h2>
 
             <p className="sidebarLabel">
-                ADMIN MENU
+                FACULTY MENU
             </p>
 
             <nav className="sidebarNav">
-
                 <NavLink to="/admin" end className="sidebarLink">
                     <span>📊</span>
                     Overview
@@ -37,13 +35,16 @@ function AdminSidebar() {
                     Manage Students
                 </NavLink>
 
+                <NavLink to="/admin/attendance" className="sidebarLink">
+                    <span>📋</span>
+                    Attendance
+                </NavLink>
             </nav>
 
             <div className="sidebarBottom">
-
                 <div className="sidebarMessage">
                     <span>🌿</span>
-                    <p>Manage learning. Inspire growth.</p>
+                    <p>Teach. Inspire. Empower.</p>
                 </div>
 
                 <button
@@ -53,9 +54,7 @@ function AdminSidebar() {
                     <span>↪</span>
                     Logout
                 </button>
-
             </div>
-
         </aside>
     );
 }

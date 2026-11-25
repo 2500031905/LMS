@@ -15,9 +15,11 @@ function Login() {
             localStorage.getItem("eduLearnUsers") || "[]"
         );
 
+        const normalizedEmail = email.trim().toLowerCase();
+
         const user = users.find(
             item =>
-                item.email === email &&
+                item.email?.trim().toLowerCase() === normalizedEmail &&
                 item.password === password
         );
 
@@ -26,37 +28,52 @@ function Login() {
             return;
         }
 
-        localStorage.setItem(
-            "eduLearnCurrentUser",
-            JSON.stringify(user)
+        const updatedUser = {
+            ...user,
+            role: user.role?.toLowerCase() === "admin"
+                ? "Faculty"
+                : user.role
+        };
+
+        const updatedUsers = users.map(item =>
+            item.email?.trim().toLowerCase() === normalizedEmail
+                ? updatedUser
+                : item
         );
 
-        if (user.role?.toLowerCase() === "admin") {
+        localStorage.setItem(
+            "eduLearnUsers",
+            JSON.stringify(updatedUsers)
+        );
+
+        localStorage.setItem(
+            "eduLearnCurrentUser",
+            JSON.stringify(updatedUser)
+        );
+
+        if (updatedUser.role?.toLowerCase() === "faculty") {
             navigate("/admin");
-        } else {
+        } else if (updatedUser.role?.toLowerCase() === "student") {
             navigate("/dashboard");
+        } else {
+            localStorage.removeItem("eduLearnCurrentUser");
+            alert("Invalid user role!");
         }
     }
 
     return (
         <div className="authPage">
-
             <Link to="/" className="authBrand">
                 EduLearn<span>.</span>
             </Link>
 
             <div className="authContainer">
-
-                {/* LEFT SIDE */}
                 <div className="authWelcome">
-
                     <span className="eyebrow">
                         YOUR LEARNING JOURNEY
                     </span>
 
-                    <h1>
-                        Welcome Back!
-                    </h1>
+                    <h1>Welcome Back!</h1>
 
                     <p>
                         Continue where you left off.
@@ -78,12 +95,9 @@ function Login() {
                         Your future starts with what you
                         learn today.
                     </p>
-
                 </div>
 
-                {/* RIGHT SIDE */}
                 <div className="authFormSection">
-
                     <div className="authFormHeader">
                         <h2>Login to EduLearn</h2>
 
@@ -94,7 +108,6 @@ function Login() {
                     </div>
 
                     <form onSubmit={handleLogin}>
-
                         <label>Email Address</label>
 
                         <input
@@ -121,12 +134,10 @@ function Login() {
                         >
                             Login to Account
                         </button>
-
                     </form>
 
                     <p className="authRegister">
-                        Don't have an account?
-                        {" "}
+                        Don't have an account?{" "}
                         <Link to="/register">
                             Create Account
                         </Link>
@@ -135,15 +146,12 @@ function Login() {
                     <Link to="/" className="authBack">
                         ← Back to Home
                     </Link>
-
                 </div>
-
             </div>
 
             <p className="authFooter">
                 © 2026 EduLearn. Learn something new every day.
             </p>
-
         </div>
     );
 }

@@ -31,42 +31,36 @@ function AdminDashboard() {
 
     return (
         <div className="layout">
-
             <AdminSidebar />
 
             <main className="main">
-
-                {/* WELCOME SECTION */}
                 <section className="adminWelcome">
-
                     <div>
                         <span className="eyebrow">
-                            ADMIN MODULE
+                            FACULTY MODULE
                         </span>
 
                         <h1>
-                            Welcome, {current.name || "Admin"}!
+                            Welcome, {current.name || "Faculty"}!
                         </h1>
 
                         <p>
-                            Manage your learning platform,
-                            courses and registered students.
+                            Manage your courses, monitor student
+                            enrollment and support your students'
+                            learning journey.
                         </p>
                     </div>
 
                     <div className="adminWelcomeIcon">
-                        🏫
+                        🎓
                     </div>
-
                 </section>
 
-                {/* STATISTICS */}
                 <section className="adminStatsSection">
-
                     <div className="sectionHeading">
                         <div>
                             <span className="eyebrow">
-                                PLATFORM OVERVIEW
+                                FACULTY OVERVIEW
                             </span>
 
                             <h2>Dashboard Statistics</h2>
@@ -74,7 +68,6 @@ function AdminDashboard() {
                     </div>
 
                     <div className="statsGrid">
-
                         <div className="card stat adminStatCard">
                             <div className="adminStatIcon">📚</div>
 
@@ -104,18 +97,14 @@ function AdminDashboard() {
 
                             <small>Course registrations</small>
                         </div>
-
                     </div>
-
                 </section>
 
-                {/* QUICK ACTIONS */}
                 <section className="adminActionsSection">
-
                     <div className="sectionHeading">
                         <div>
                             <span className="eyebrow">
-                                MANAGEMENT
+                                FACULTY TOOLS
                             </span>
 
                             <h2>Quick Actions</h2>
@@ -123,7 +112,6 @@ function AdminDashboard() {
                     </div>
 
                     <div className="actionCards">
-
                         <Link
                             to="/admin/courses"
                             className="actionCard adminActionCard"
@@ -135,7 +123,7 @@ function AdminDashboard() {
                             <b>Manage Courses</b>
 
                             <span>
-                                Add, edit and delete courses.
+                                Add, edit and manage available courses.
                             </span>
 
                             <strong className="adminActionLink">
@@ -154,32 +142,29 @@ function AdminDashboard() {
                             <b>Manage Students</b>
 
                             <span>
-                                View registered students and their progress.
+                                View registered students and monitor
+                                their course progress.
                             </span>
 
                             <strong className="adminActionLink">
                                 Go to Students →
                             </strong>
                         </Link>
-
                     </div>
-
                 </section>
 
-                {/* BOTTOM MESSAGE */}
                 <section className="adminBottomBanner">
                     <div>
-                        <h2>Keep EduLearn Growing!</h2>
+                        <h2>Empower Every Learner!</h2>
 
                         <p>
-                            A better learning experience starts
-                            with effective course management.
+                            Support student growth through effective
+                            teaching and course management.
                         </p>
                     </div>
 
                     <span>🌿</span>
                 </section>
-
             </main>
         </div>
     );

@@ -17,8 +17,21 @@ function Register() {
             localStorage.getItem("eduLearnUsers") || "[]"
         );
 
-        const exists = users.find(
-            user => user.email === email
+        const updatedUsers = users.map(user =>
+            user.role?.toLowerCase() === "admin"
+                ? { ...user, role: "Faculty" }
+                : user
+        );
+
+        localStorage.setItem(
+            "eduLearnUsers",
+            JSON.stringify(updatedUsers)
+        );
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const exists = updatedUsers.find(
+            user => user.email?.trim().toLowerCase() === normalizedEmail
         );
 
         if (exists) {
@@ -27,17 +40,17 @@ function Register() {
         }
 
         const newUser = {
-            name,
-            email,
+            name: name.trim(),
+            email: normalizedEmail,
             password,
             role
         };
 
-        users.push(newUser);
+        updatedUsers.push(newUser);
 
         localStorage.setItem(
             "eduLearnUsers",
-            JSON.stringify(users)
+            JSON.stringify(updatedUsers)
         );
 
         alert("Registration successful! Please login.");
@@ -46,23 +59,17 @@ function Register() {
 
     return (
         <div className="authPage">
-
             <Link to="/" className="authBrand">
                 EduLearn<span>.</span>
             </Link>
 
             <div className="authContainer">
-
-                {/* LEFT SIDE */}
                 <div className="authWelcome">
-
                     <span className="eyebrow">
                         START YOUR JOURNEY
                     </span>
 
-                    <h1>
-                        Join EduLearn!
-                    </h1>
+                    <h1>Join EduLearn!</h1>
 
                     <p>
                         Create your account and take the
@@ -72,7 +79,6 @@ function Register() {
 
                     <div className="authIllustration">
                         <div className="authBook">🌱</div>
-
                         <div className="authFloating">
                             ✨ Start Learning
                         </div>
@@ -84,24 +90,18 @@ function Register() {
                         Learn at your own pace.
                         Grow with every lesson.
                     </p>
-
                 </div>
 
-                {/* RIGHT SIDE */}
                 <div className="authFormSection">
-
                     <div className="authFormHeader">
                         <h2>Create Your Account</h2>
-
                         <p>
                             Fill in your details to get started.
                         </p>
                     </div>
 
                     <form onSubmit={handleRegister}>
-
                         <label>Full Name</label>
-
                         <input
                             type="text"
                             placeholder="Enter your full name"
@@ -111,7 +111,6 @@ function Register() {
                         />
 
                         <label>Email Address</label>
-
                         <input
                             type="email"
                             placeholder="Enter your email"
@@ -121,7 +120,6 @@ function Register() {
                         />
 
                         <label>Password</label>
-
                         <input
                             type="password"
                             placeholder="Create a password"
@@ -131,13 +129,12 @@ function Register() {
                         />
 
                         <label>Register As</label>
-
                         <select
                             value={role}
                             onChange={e => setRole(e.target.value)}
                         >
                             <option value="Student">Student</option>
-                            <option value="Admin">Admin</option>
+                            <option value="Faculty">Faculty</option>
                         </select>
 
                         <button
@@ -146,29 +143,22 @@ function Register() {
                         >
                             Create Account
                         </button>
-
                     </form>
 
                     <p className="authRegister">
-                        Already have an account?
-                        {" "}
-                        <Link to="/login">
-                            Login
-                        </Link>
+                        Already have an account?{" "}
+                        <Link to="/login">Login</Link>
                     </p>
 
                     <Link to="/" className="authBack">
                         ← Back to Home
                     </Link>
-
                 </div>
-
             </div>
 
             <p className="authFooter">
                 © 2026 EduLearn. Learn something new every day.
             </p>
-
         </div>
     );
 }

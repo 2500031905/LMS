@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import StudentSidebar from "../components/StudentSidebar";
 
@@ -17,26 +18,55 @@ function MyCourses() {
         ) || "[]"
     );
 
-    const progress = JSON.parse(
-        localStorage.getItem(
-            `eduLearnProgress_${user?.email}`
-        ) || "{}"
+    const progressKey = `eduLearnProgress_${user?.email}`;
+
+    const [completedTopics, setCompletedTopics] = useState(() =>
+        JSON.parse(localStorage.getItem(progressKey) || "{}")
     );
 
     const myCourses = courses.filter(course =>
         enrollments.includes(course.id)
     );
 
+    function toggleTopic(courseId, topic) {
+        const currentTopics = completedTopics[courseId] || [];
+
+        const updatedTopics = currentTopics.includes(topic)
+            ? currentTopics.filter(item => item !== topic)
+            : [...currentTopics, topic];
+
+        const updatedProgress = {
+            ...completedTopics,
+            [courseId]: updatedTopics
+        };
+
+        setCompletedTopics(updatedProgress);
+
+        localStorage.setItem(
+            progressKey,
+            JSON.stringify(updatedProgress)
+        );
+    }
+
+    function getProgress(course) {
+        const topics = course.topics || [];
+
+        if (topics.length === 0) return 0;
+
+        const completed = completedTopics[course.id] || [];
+
+        return Math.round(
+            (completed.filter(topic => topics.includes(topic)).length /
+                topics.length) * 100
+        );
+    }
+
     return (
         <div className="layout">
-
             <StudentSidebar />
 
             <main className="main">
-
-                {/* PAGE HEADER */}
                 <div className="myCoursesWelcome">
-
                     <div>
                         <span className="eyebrow">
                             YOUR LEARNING SPACE
@@ -53,12 +83,9 @@ function MyCourses() {
                     <div className="myCoursesIcon">
                         🎓
                     </div>
-
                 </div>
 
-                {/* SUMMARY */}
                 <div className="panel myCoursesSummary">
-
                     <div>
                         <span className="eyebrow">
                             LEARNING OVERVIEW
@@ -77,14 +104,10 @@ function MyCourses() {
                         {myCourses.length}
                         <span>Courses</span>
                     </div>
-
                 </div>
 
-                {/* COURSE LIST */}
                 {myCourses.length === 0 ? (
-
                     <div className="panel emptyState myCoursesEmpty">
-
                         <div style={{ fontSize: "55px" }}>
                             📖
                         </div>
@@ -100,13 +123,9 @@ function MyCourses() {
                         <Link to="/courses" className="btn">
                             Explore Courses →
                         </Link>
-
                     </div>
-
                 ) : (
-
                     <section className="myCoursesSection">
-
                         <div className="sectionHeading">
                             <div>
                                 <h2>Your Courses</h2>
@@ -118,24 +137,16 @@ function MyCourses() {
                         </div>
 
                         <div className="courseGrid">
-
                             {myCourses.map((course, index) => {
-
-                                const value = Math.min(
-                                    100,
-                                    Math.max(
-                                        0,
-                                        Number(progress[course.id]) || 0
-                                    )
-                                );
+                                const topics = course.topics || [];
+                                const completed = completedTopics[course.id] || [];
+                                const value = getProgress(course);
 
                                 return (
-
                                     <div
                                         className="courseCard myCourseCard"
                                         key={course.id}
                                     >
-
                                         <div className={`courseIcon icon${index % 3}`}>
                                             {index % 3 === 0
                                                 ? "💻"
@@ -152,10 +163,8 @@ function MyCourses() {
 
                                         <p>{course.description}</p>
 
-                                        {/* PROGRESS */}
                                         <div className="myProgressHeader">
                                             <strong>Course Progress</strong>
-
                                             <strong>{value}%</strong>
                                         </div>
 
@@ -176,6 +185,37 @@ function MyCourses() {
                                                 : "Keep up the great work!"}
                                         </span>
 
+                                        <div className="topicChecklist">
+                                            <h4>Course Topics</h4>
+
+                                            {topics.length === 0 ? (
+                                                <p>No topics added yet.</p>
+                                            ) : (
+                                                topics.map((topic, topicIndex) => (
+                                                    <label
+                                                        key={`${course.id}-${topicIndex}`}
+                                                        className="topicCheckbox"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={completed.includes(topic)}
+                                                            onChange={() =>
+                                                                toggleTopic(course.id, topic)
+                                                            }
+                                                        />
+
+                                                        <span>{topic}</span>
+                                                    </label>
+                                                ))
+                                            )}
+
+                                            <p className="topicCount">
+                                                {completed.filter(topic =>
+                                                    topics.includes(topic)
+                                                ).length} of {topics.length} topics completed
+                                            </p>
+                                        </div>
+
                                         <Link
                                             to={`/course/${course.id}`}
                                             className="btn myCourseButton"
@@ -184,16 +224,11 @@ function MyCourses() {
                                                 ? "Review Course"
                                                 : "Continue Learning →"}
                                         </Link>
-
                                     </div>
-
                                 );
                             })}
-
                         </div>
-
                     </section>
-
                 )}
 
                 <div className="myCoursesBottom">
@@ -201,7 +236,6 @@ function MyCourses() {
                         + Explore More Courses
                     </Link>
                 </div>
-
             </main>
         </div>
     );
